@@ -1,4 +1,16 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  ValidationPipe,
+  UsePipes
+} from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import {FindStoryDto} from "./dto/find-story.dto";
@@ -11,6 +23,7 @@ export class StoryController {
   constructor(private readonly storyService: StoryService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   @ApiOperation({summary : 'create story'})
   @ApiResponse({status: 201, type: FindStoryDto})
   @HttpCode(HttpStatus.CREATED)
@@ -27,6 +40,7 @@ export class StoryController {
   }
 
   @Get()
+  @UsePipes(ValidationPipe)
   @ApiOperation({summary : 'find all story'})
   @ApiResponse({status: 200, type: FindStoryDto})
   @HttpCode(HttpStatus.OK)
