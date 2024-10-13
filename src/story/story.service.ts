@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStoryDto } from './dto/create-story.dto';
-import { FindAllStoryDto } from './dto/find-all-story.dto';
+import {Story} from "./entities/story.entity";
+import {MoreThan} from "typeorm";
 
 @Injectable()
 export class StoryService {
   create(createStoryDto: CreateStoryDto) {
-    return 'This action adds a new story';
+    const storyEntity = new Story();
+    storyEntity.title = createStoryDto.title;
+    storyEntity.author = createStoryDto.author;
+    storyEntity.image = createStoryDto.image;
+    storyEntity.hashtags = createStoryDto.hashtags;
+    storyEntity.validTime = createStoryDto.validTime;
+    storyEntity.createdAt = new Date();
+    return storyEntity.save();
   }
 
   findAll() {
-    return `This action returns all story`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} story`;
-  }
-
-  update(id: number, updateStoryDto: FindAllStoryDto) {
-    return `This action updates a #${id} story`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} story`;
+    const baseDate = new Date();
+    baseDate.setHours(baseDate.getHours() - 12);
+    return Story.findBy({
+        createdAt : MoreThan(baseDate)
+    });
   }
 }

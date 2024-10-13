@@ -1,5 +1,6 @@
-export class FindAllStoryDto {
+export class FindStoryDto {
     id : number;
+    createdAt : Date;
     title : string;
     validTime : number;
     author : string;

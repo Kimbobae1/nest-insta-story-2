@@ -1,34 +1,40 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dto/create-story.dto';
-import { FindAllStoryDto } from './dto/find-all-story.dto';
+import {FindStoryDto} from "./dto/find-story.dto";
+import {Story} from "./entities/story.entity";
 
-@Controller('story')
+@Controller('stories')
 export class StoryController {
   constructor(private readonly storyService: StoryService) {}
 
   @Post()
-  create(@Body() createStoryDto: CreateStoryDto) {
-    return this.storyService.create(createStoryDto);
+  async create(@Body() createStoryDto: CreateStoryDto) {
+    const resultStory = await this.storyService.create(createStoryDto);
+    const resultDto = new FindStoryDto();
+    resultDto.id = resultStory.id;
+    resultDto.title = resultStory.title;
+    resultDto.author = resultStory.author;
+    resultDto.image = resultStory.image;
+    resultDto.hashtags = resultStory.hashtags;
+    resultDto.createdAt = resultStory.createdAt;
+    return resultDto;
   }
 
   @Get()
-  findAll() {
-    return this.storyService.findAll();
+  async findAll() {
+    const stories = await this.storyService.findAll();
+    return stories.map(story => {
+      const resultDto = new FindStoryDto();
+      resultDto.id = story.id;
+      resultDto.title = story.title;
+      resultDto.author = story.author;
+      resultDto.image = story.image;
+      resultDto.hashtags = story.hashtags;
+      resultDto.validTime = story.validTime;
+      resultDto.createdAt = story.createdAt;
+      return resultDto;
+    })
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.storyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStoryDto: FindAllStoryDto) {
-    return this.storyService.update(+id, updateStoryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.storyService.remove(+id);
-  }
 }

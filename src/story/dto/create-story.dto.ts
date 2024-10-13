@@ -1,5 +1,4 @@
 export class CreateStoryDto {
-    id
     title : string;
     validTime : number;
     author : string;

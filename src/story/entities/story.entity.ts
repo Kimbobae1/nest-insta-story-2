@@ -6,6 +6,9 @@ export class Story extends BaseEntity {
     id : number;
 
     @Column()
+    createdAt : Date;
+
+    @Column()
     title : string;
 
     @Column()
