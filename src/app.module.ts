@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
-import { QModule } from './q/q.module';
+import { StoryModule } from './story/story.module';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { QModule } from './q/q.module';
         return addTransactionalDataSource(new DataSource(options));
       },
     }),
-    QModule,
+    StoryModule,
   ],
   controllers: [],
   providers: [],
