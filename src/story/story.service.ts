@@ -10,7 +10,7 @@ export class StoryService {
     storyEntity.title = createStoryDto.title;
     storyEntity.author = createStoryDto.author;
     storyEntity.image = createStoryDto.image;
-    storyEntity.hashtags = createStoryDto.hashtags;
+    storyEntity.hashtags = [...new Set(createStoryDto.hashtags)];
     storyEntity.validTime = createStoryDto.validTime;
     storyEntity.createdAt = new Date();
     return storyEntity.save();
