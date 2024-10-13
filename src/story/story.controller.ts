@@ -9,13 +9,14 @@ import {
   HttpCode,
   HttpStatus,
   ValidationPipe,
-  UsePipes
+  UsePipes, Query
 } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import {FindStoryDto} from "./dto/find-story.dto";
 import {Story} from "./entities/story.entity";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {PaginationDto} from "./dto/pagination.dto";
 
 @ApiTags("story")
 @Controller('stories')
@@ -44,9 +45,9 @@ export class StoryController {
   @ApiOperation({summary : 'find all story'})
   @ApiResponse({status: 200, type: FindStoryDto})
   @HttpCode(HttpStatus.OK)
-  async findAll() {
-    const stories = await this.storyService.findAll();
-    return stories.map(story => {
+  async findAll(@Query() paginationDto: PaginationDto) {
+    const stories = await this.storyService.findAll(paginationDto);
+    stories["data"].map(story => {
       const resultDto = new FindStoryDto();
       resultDto.id = story.id;
       resultDto.title = story.title;
@@ -57,6 +58,7 @@ export class StoryController {
       resultDto.createdAt = story.createdAt;
       return resultDto;
     })
+    return stories;
   }
 
 }
