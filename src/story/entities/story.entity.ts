@@ -20,6 +20,6 @@ export class Story extends BaseEntity {
     @Column()
     image : string;
 
-    @Column()
+    @Column('json', { nullable: true })
     hashtags : string[];
 }

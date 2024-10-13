@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {ArrayNotEmpty, IsArray, IsIn, IsNotEmpty, IsNumber, IsString, IsUrl} from "class-validator";
+import {ArrayNotEmpty, IsArray, IsIn, IsNotEmpty, IsNumber, IsString, IsUrl, Matches} from "class-validator";
 
 export class CreateStoryDto {
     @ApiProperty()
@@ -23,5 +23,6 @@ export class CreateStoryDto {
     @IsArray()
     @ArrayNotEmpty()
     @IsString({ each: true })
+    @Matches(/^#[a-zA-Z0-9_]+$/, {each : true, message: "Hashtags must begin with '#'"})
     hashtags : string[];
 }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { addTransactionalDataSource } from 'typeorm-transactional';
+import {addTransactionalDataSource, getDataSourceByName} from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { StoryModule } from './story/story.module';
 
@@ -27,7 +27,7 @@ import { StoryModule } from './story/story.module';
           throw new Error('Invalid options passed');
         }
 
-        return addTransactionalDataSource(new DataSource(options));
+        return getDataSourceByName("default") || addTransactionalDataSource(new DataSource(options));
       },
     }),
     StoryModule,
