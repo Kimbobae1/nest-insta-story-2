@@ -1,14 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus} from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import {FindStoryDto} from "./dto/find-story.dto";
 import {Story} from "./entities/story.entity";
+import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 
+@ApiTags("story")
 @Controller('stories')
 export class StoryController {
   constructor(private readonly storyService: StoryService) {}
 
   @Post()
+  @ApiOperation({summary : 'create story'})
+  @ApiResponse({status: 201, type: FindStoryDto})
+  @HttpCode(HttpStatus.CREATED)
   async create(@Body() createStoryDto: CreateStoryDto) {
     const resultStory = await this.storyService.create(createStoryDto);
     const resultDto = new FindStoryDto();
@@ -22,6 +27,9 @@ export class StoryController {
   }
 
   @Get()
+  @ApiOperation({summary : 'find all story'})
+  @ApiResponse({status: 200, type: FindStoryDto})
+  @HttpCode(HttpStatus.OK)
   async findAll() {
     const stories = await this.storyService.findAll();
     return stories.map(story => {

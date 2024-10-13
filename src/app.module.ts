@@ -11,7 +11,7 @@ import { StoryModule } from './story/story.module';
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {
-          type: 'mysql',
+          type: 'postgres',
           host: process.env.DB_HOST,
           port: parseInt(process.env.DB_PORT),
           username: process.env.DB_USERNAME,
@@ -19,6 +19,7 @@ import { StoryModule } from './story/story.module';
           database: process.env.DB_DATABASE,
           synchronize: process.env.DB_SYNC === 'true',
           timezone: 'Z',
+          entities: [__dirname + '/**/*.entity{.ts,.js}']
         };
       },
       async dataSourceFactory(options) {
